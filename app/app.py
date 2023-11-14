@@ -14,6 +14,10 @@ profileFile = open('profile.html', 'r+')
 profileHtml = profileFile.read()
 profileFile.close()
 
+ticketsFile = open('tickets.html', 'r+')
+ticketsHtml = ticketsFile.read()
+ticketsFile.close()
+
 
 class ApiMSQLS:
     def __init__(self):
@@ -21,7 +25,7 @@ class ApiMSQLS:
         self.cursor = self.conn.cursor()
         self.matricula = ""
         self.hashed = b""
-        self.userEvents = []
+        self.userTickets = []
         self.name = ""
 
     def login(self, matricula, password):
@@ -35,11 +39,11 @@ class ApiMSQLS:
         self.hashed = bcrypt.hashpw(password.encode('utf-8'), salt.encode('utf-8'))
         self.cursor.execute("EXEC requestLogin " + self.matricula + ", '" + self.hashed.decode() + "'")
         try:
-            self.userEvents = self.cursor.fetchall()
+            self.userTickets = self.cursor.fetchall()
         except Exception:
             response = {'message': 'Matricula o password incorrectos'}
             return response
-        self.name = self.userEvents[0][0] + " " + self.userEvents[0][1]
+        self.name = self.userTickets[0][0] + " " + self.userTickets[0][1]
         window.load_html(dashboardHtml)
         response = {'message': 'Accediendo...'}
         return response
@@ -52,7 +56,7 @@ class ApiMSQLS:
     def logout(self):
         self.matricula = ""
         self.hashed = ""
-        self.userEvents = []
+        self.userTickets = []
         self.name = ""
         window.load_html(loginHtml)
 
@@ -76,6 +80,18 @@ class ApiMSQLS:
             response = {'message': 'Ha ocurrido un error...'}
             return response
         response = {'message': 'El password ha sido cambiado...'}
+        return response
+
+    def go_tickets(self):
+        window.load_html(ticketsHtml)
+
+    def initialize_tickets(self):
+        ticket_options = ""
+        for ticket in self.userTickets:
+            ticket_options += ("<option value=\"" + str(ticket[3]) + "\">" + ticket[5] + " - " + str(ticket[3])
+                               + "</option>\n")
+        response = {'name': self.name, 'ticket_options': ticket_options}
+        print(response)
         return response
 
 

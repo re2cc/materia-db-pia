@@ -28,25 +28,35 @@
 </head>
 <body>
 
-<h1>Dashboard</h1>
+<h1>Boletos</h1>
 <p id='pywebview-status'><i>pywebview</i> is not ready</p>
 <p id='nameText'></p>
 
-<button onclick="go_profile()">Perfil</button>
-<button onclick="go_tickets()">Boletos</button>
-<button onClick="logout()">Cerrar sesion</button><br/>
+<h2>Ver detalles:</h2>
+<label for="boletosDrop">Selecciona un boleto:</label>
+<select name="boletosDrop" id="boletosDrop">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+</select>
+<button onClick="get_ticket()">Cambiar</button><br/>
+<button onClick="go_dashboard()">Regresar</button><br/>
 
 <div id="response-container"></div>
 <script>
     window.addEventListener('pywebviewready', function() {
         var container = document.getElementById('pywebview-status')
         container.innerHTML = '<i>pywebview</i> is ready'
-        pywebview.api.initialize_dashboard().then(initialize)
+        pywebview.api.initialize_tickets().then(initialize)
     })
 
     function initialize(response){
         var container = document.getElementById('nameText')
         container.innerText = 'Bienvenido ' + response.name + '!'
+
+        var option = document.getElementById('boletosDrop')
+        option.innerHTML = response.ticket_options
     }
 
     function showResponse(response) {
@@ -56,16 +66,14 @@
         container.style.display = 'block'
     }
 
-    function logout() {
-        pywebview.api.logout()
+    function go_dashboard() {
+        pywebview.api.go_dashboard()
     }
 
-    function go_profile() {
-        pywebview.api.go_profile()
-    }
-
-    function go_tickets() {
-        pywebview.api.go_tickets()
+    function get_ticket() {
+        var options = document.getElementById("boletosDrop");
+        var selected = options.value;
+        pywebview.api.get_ticket_detailds(selected).then(showResponse)
     }
 
 </script>

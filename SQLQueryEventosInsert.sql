@@ -1,9 +1,6 @@
 -- create database materiadbpia
 use materiadbpia
 
-INSERT INTO roles (nombre, permisosAdmn) VALUES ('Administrador', 1)
-INSERT INTO roles (nombre, permisosAdmn) VALUES ('Usuario', 0)
-
 INSERT INTO dependencias (nombre) VALUES ('FCFM')
 INSERT INTO dependencias (nombre) VALUES ('FARQ')
 INSERT INTO dependencias (nombre) VALUES ('FIME')
@@ -15,10 +12,14 @@ INSERT INTO sedes (nombre, ubicacion, capacidad) VALUES ('Auditorio 2', 'Primer 
 INSERT INTO sedes (nombre, ubicacion, capacidad) VALUES ('Plaza cultural', 'Planta baja', 300)
 INSERT INTO sedes (nombre, ubicacion, capacidad) VALUES ('Laboratorio', 'Segundo piso', 35)
 
-INSERT INTO invitados (nombre) VALUES ('Tomasa Palma')
-INSERT INTO invitados (nombre) VALUES ('Karima Rosell')
-INSERT INTO invitados (nombre) VALUES ('Santos Farina')
+INSERT INTO invitados (nombres, apellidoPaterno, apellidoMaterno) VALUES ('Tomasa', 'Palma', 'Perez')
+INSERT INTO invitados (nombres, apellidoPaterno, apellidoMaterno) VALUES ('Karima', 'Rosell', 'Gomez')
+INSERT INTO invitados (nombres, apellidoPaterno, apellidoMaterno) VALUES ('Santos', 'Farina', 'Rojas')
 
+INSERT INTO boletos (codigoBarras, idEventos) VALUES (15125212, 1)
+INSERT INTO asistenciaUsuarios (idBoletos, asistencia, idUsuarios) VALUES (3, 1, 1)
+
+-- TODO
 INSERT INTO usuarios (nombre, matricula, contraseña, idDependencia, idRoles)
 VALUES ('Sergi Zheng', 1234567, '2$&2xcJ', 1, 2)
 INSERT INTO usuarios (nombre, matricula, contraseña, idDependencia, idRoles)
