@@ -11,8 +11,11 @@ create table sedes (
 create table roles (
 	idRoles int IDENTITY(1,1) PRIMARY KEY,
 	nombre nvarchar(15) NOT NULL,
-	permisosAdmn bit default 0 NOT NULL -- No tiene permisos de administrador por default
 )
+
+INSERT INTO roles (nombre) VALUES ('Administrador')
+INSERT INTO roles (nombre) VALUES ('Operador')
+INSERT INTO roles (nombre) VALUES ('Usuario')
 
 create table dependencias(
 	idDependencias int IDENTITY(1,1) PRIMARY KEY,
@@ -35,13 +38,13 @@ create table usuarios(
     contraseña nvarchar(MAX) NOT NULL,
     salt nvarchar(15) NOT NULL UNIQUE,
 	idDependencias int NOT NULL FOREIGN KEY REFERENCES dependencias(idDependencias),
-	idRoles int NOT NULL FOREIGN KEY REFERENCES roles(idRoles),
+	idRoles int NOT NULL FOREIGN KEY REFERENCES roles(idRoles) default 3,
 	activo bit default 1 NOT NULL -- Esta activo por default
 )
 
 create table eventos(
 	idEventos int IDENTITY(1,1) PRIMARY KEY,
-	nombre nvarchar(25) NOT NULL,
+	nombre nvarchar(40) NOT NULL,
 	fecha datetime NOT NULL,
 	idSedes int NOT NULL FOREIGN KEY REFERENCES sedes(idSedes),
 	idDependencias int NOT NULL FOREIGN KEY REFERENCES dependencias(idDependencias)
