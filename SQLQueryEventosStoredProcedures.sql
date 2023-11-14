@@ -35,8 +35,3 @@ CREATE PROCEDURE requestEliminarBoletoUsuario(
         ON boletos.idBoletos = asistenciaUsuarios.idBoletos WHERE codigoBarras = @codigoBarras
     DELETE FROM boletos WHERE codigoBarras = @codigoBarras
 end
-
-EXEC requestSalt 21212121
-EXEC requestLogin 21212121, 123
-EXEC requestCrearInvitado 'Setu', 'Re', 'Shou'
-EXEC requestEliminarBoletoUsuario 222222
