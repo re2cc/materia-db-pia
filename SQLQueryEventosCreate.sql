@@ -35,8 +35,8 @@ create table usuarios(
     apellidoPaterno nvarchar(50) NOT NULL,
     apellidoMaterno nvarchar(50) NOT NULL,
 	matricula int UNIQUE NOT NULL,
-    contraseña nvarchar(MAX) NOT NULL,
-    salt nvarchar(15) NOT NULL UNIQUE,
+    contraseña nvarchar(60) NOT NULL,
+    salt nvarchar(30) NOT NULL UNIQUE,
 	idDependencias int NOT NULL FOREIGN KEY REFERENCES dependencias(idDependencias),
 	idRoles int NOT NULL FOREIGN KEY REFERENCES roles(idRoles) default 3,
 	activo bit default 1 NOT NULL -- Esta activo por default
