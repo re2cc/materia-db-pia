@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <style>
+        #response-container {
+            display: none;
+            padding: 3rem;
+            margin: 3rem 5rem;
+            font-size: 120%;
+            border: 5px dashed #ccc;
+        }
+
+        label {
+            margin-left: 0.3rem;
+            margin-right: 0.3rem;
+        }
+
+        button {
+            font-size: 100%;
+            padding: 0.5rem;
+            margin: 0.3rem;
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Dashboard</h1>
+<p id='pywebview-status'><i>pywebview</i> is not ready</p>
+<p id='nameText'></p>
+
+<button onclick="go_profile()">Perfil</button>
+<button onClick="logout()">Cerrar sesion</button><br/>
+
+<div id="response-container"></div>
+<script>
+    window.addEventListener('pywebviewready', function() {
+        var container = document.getElementById('pywebview-status')
+        container.innerHTML = '<i>pywebview</i> is ready'
+        pywebview.api.initialize_dashboard().then(initialize)
+    })
+
+    function initialize(response){
+        var container = document.getElementById('nameText')
+        container.innerText = 'Bienvenido ' + response.name + '!'
+    }
+
+    function showResponse(response) {
+        var container = document.getElementById('response-container')
+
+        container.innerText = response.message
+        container.style.display = 'block'
+    }
+
+    function logout() {
+        pywebview.api.logout()
+    }
+
+    function go_profile() {
+        pywebview.api.go_profile()
+    }
+
+</script>
+</body>
+</html>
