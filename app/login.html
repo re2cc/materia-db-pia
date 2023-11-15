@@ -2,39 +2,81 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-
-    <style>
-        #response-container {
-            display: none;
-            padding: 3rem;
-            margin: 3rem 5rem;
-            font-size: 120%;
-            border: 5px dashed #ccc;
-        }
-
-        label {
-            margin-left: 0.3rem;
-            margin-right: 0.3rem;
-        }
-
-        button {
-            font-size: 100%;
-            padding: 0.5rem;
-            margin: 0.3rem;
-            text-transform: uppercase;
-        }
-
-    </style>
+    <style>.container{
+        display: flex;
+        flex-direction: column;
+        background: #a2a2a2;
+        width: 100vw;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+    }
+    #response-container {
+        display: none;
+        padding: 3rem;
+        margin: 3rem 5rem;
+        font-size: 120%;
+        border: 5px dashed #ccc;
+    }
+    
+    label {
+        margin-left: 0.3rem;
+        margin-right: 0.3rem;
+    }
+    
+    button {
+        font-size: 100%;
+        padding: 0.5rem;
+        margin: 0.3rem;
+        text-transform: uppercase;
+    }
+    body{
+        padding: 0;
+        border: 0;
+        margin: 0;
+    }
+    .box{
+        display: flex;
+        flex-direction: column;
+        gap: 1.2em;
+        color: black;
+        height: 50vh;
+        width: 800px;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        background-color: cadetblue;
+        border-radius: 2em;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2)
+    }
+    .input{
+        width: 300px;
+    }
+    .button{
+        width: 200px;
+    }
+    .flex{
+        display: flex;
+    }</style>
 </head>
-<body>
-
+<body class="container">
+<div class="box">
 <h1>Login</h1>
-<p id='pywebview-status'><i>pywebview</i> is not ready</p>
 
-<label for="matricula">Matricula:</label><input id="matricula" placeholder="0000000">
-<label for="password">Password:</label><input id="password" placeholder="">
-<button onClick="login()">Acceder</button><br/>
+<div class="flex flex-col gap-5">
+    <label for="matricula">Matricula:</label>
+    <br>
+    <input class="input" id="matricula" placeholder="0000000">
+</div>
 
+<div class="flex flex-col">
+    <label for="password">Password:</label>
+    <br>
+    <input class='input' id="password" placeholder="">
+   
+</div>
+<button class="button" onClick="login()">Acceder</button><br/>
+</div>
 <div id="response-container"></div>
 <script>
     window.addEventListener('pywebviewready', function() {

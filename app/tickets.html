@@ -23,15 +23,78 @@
             margin: 0.3rem;
             text-transform: uppercase;
         }
+.container{
+    display: flex;
+    flex-direction: column;
+    background: #a2a2a2;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+#response-container {
+    display: none;
+    padding: 3rem;
+    margin: 3rem 5rem;
+    font-size: 120%;
+    border: 5px dashed #ccc;
+}
 
+label {
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+}
+
+button {
+    font-size: 100%;
+    padding: 0.5rem;
+    margin: 0.3rem;
+    text-transform: uppercase;
+}
+body{
+    padding: 0;
+    border: 0;
+    margin: 0;
+}
+.box{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+    color: black;
+    height: 50vh;
+    width: 800px;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    background-color: cadetblue;
+    border-radius: 2em;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2)
+}
+.input{
+    width: 300px;
+}
+.button{
+    width: 200px;
+}
+.flex{
+    display: flex;
+}
+.holder{
+    display: flex;
+    flex-direction: column;
+    background: rgb(212, 86, 86);
+    border-radius:1.2em;
+    padding:0.8em;
+}
     </style>
 </head>
-<body>
+<body class="container">
 
 <h1>Boletos</h1>
-<p id='pywebview-status'><i>pywebview</i> is not ready</p>
 <p id='nameText'></p>
+<p id='pywebview-status'><i>pywebview</i> is not ready</p>
 
+<div class="holder">
 <h2>Obtener boleto:</h2>
 <label for="eventosDrop">Selecciona un evento:</label>
 <select name="eventosDrop" id="eventosDrop">
@@ -50,10 +113,11 @@
 <button onClick="go_dashboard()">Regresar</button><br/>
 
 <div id="response-container"></div>
+</div>
 <script>
     window.addEventListener('pywebviewready', function() {
         var container = document.getElementById('pywebview-status')
-        container.innerHTML = '<i>pywebview</i> is ready'
+        container.innerHTML = ''
         pywebview.api.initialize_tickets().then(initialize)
     })
 

@@ -4,44 +4,88 @@
     <meta charset="UTF-8">
 
     <style>
-        #response-container {
-            display: none;
-            padding: 3rem;
-            margin: 3rem 5rem;
-            font-size: 120%;
-            border: 5px dashed #ccc;
-        }
+        .container{
+    display: flex;
+    flex-direction: column;
+    background: #a2a2a2;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+#response-container {
+    display: none;
+    padding: 3rem;
+    margin: 3rem 5rem;
+    font-size: 120%;
+    border: 5px dashed #ccc;
+}
 
-        label {
-            margin-left: 0.3rem;
-            margin-right: 0.3rem;
-        }
+label {
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+}
 
-        button {
-            font-size: 100%;
-            padding: 0.5rem;
-            margin: 0.3rem;
-            text-transform: uppercase;
-        }
-
+button {
+    font-size: 100%;
+    padding: 0.5rem;
+    margin: 0.3rem;
+    text-transform: uppercase;
+}
+body{
+    padding: 0;
+    border: 0;
+    margin: 0;
+}
+.box{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+    color: black;
+    
+    width: 800px;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    background-color: rgb(160, 148, 95);
+    border-radius: 2em;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2)
+}
+.input{
+    width: 300px;
+}
+.button{
+    width: 200px;
+}
+.flex{
+    display: flex;
+    flex-direction: column;
+}
     </style>
 </head>
-<body>
+<body class="container">
 
+    <div class="box">
 <h1>Perfil</h1>
-<p id='pywebview-status'><i>pywebview</i> is not ready</p>
-<p id='nameText'></p>
+
 
 <h2>Cambiar password:</h2>
-<label for="password">Nuevo password:</label><input id="password" placeholder="abc">
-<button onClick="change_password()">Cambiar</button><br/>
-<button onClick="go_dashboard()">Regresar</button><br/>
+<div class="flex"
+>
+    <label for="password">Nuevo password:</label><input id="password" placeholder="abc">
+</div>
+<div>
+    <button onClick="change_password()">Cambiar</button>
+    <button onClick="go_dashboard()">Regresar</button>
+</div>
 
+</div>
 <div id="response-container"></div>
+
 <script>
     window.addEventListener('pywebviewready', function() {
         var container = document.getElementById('pywebview-status')
-        container.innerHTML = '<i>pywebview</i> is ready'
+        container.innerHTML = ''
         pywebview.api.initialize_dashboard().then(initialize)
     })
 

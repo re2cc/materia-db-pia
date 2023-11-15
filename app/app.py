@@ -21,7 +21,7 @@ ticketsFile.close()
 
 class ApiMSQLS:
     def __init__(self):
-        self.conn = pymssql.connect(server='DESKTOP-OCLJ7GI\SQLEXPRESS', database='materiadbpia')
+        self.conn = pymssql.connect(server='localhost',user="sa",password="MiPassw0rd!1521", database='materiadbpia', port=1433)
         self.cursor = self.conn.cursor()
         self.matricula = ""
         self.hashed = b""
