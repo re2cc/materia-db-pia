@@ -35,12 +35,11 @@
 <h2>Ver detalles:</h2>
 <label for="boletosDrop">Selecciona un boleto:</label>
 <select name="boletosDrop" id="boletosDrop">
-    <option value="volvo">Volvo</option>
-    <option value="saab">Saab</option>
-    <option value="mercedes">Mercedes</option>
-    <option value="audi">Audi</option>
 </select>
-<button onClick="get_ticket()">Cambiar</button><br/>
+<div id="buttonContainer">
+<button onClick="get_ticket()">Ver detalles</button><br/>
+<button onClick="delete_ticket()">Borrar</button>
+</div>
 <button onClick="go_dashboard()">Regresar</button><br/>
 
 <div id="response-container"></div>
@@ -73,7 +72,13 @@
     function get_ticket() {
         var options = document.getElementById("boletosDrop");
         var selected = options.value;
-        pywebview.api.get_ticket_detailds(selected).then(showResponse)
+        pywebview.api.get_ticket_details(selected).then(showResponse)
+    }
+
+    function delete_ticket() {
+        var options = document.getElementById("boletosDrop");
+        var selected = options.value;
+        pywebview.api.delete_ticket(selected).then(showResponse)
     }
 
 </script>

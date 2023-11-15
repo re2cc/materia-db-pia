@@ -10,8 +10,8 @@ CREATE PROCEDURE requestLogin(
 ) AS BEGIN
     IF EXISTS(SELECT usuarios.idUsuarios FROM usuarios WHERE @matricula = matricula AND @contraseña = contraseña)
     BEGIN
-        SELECT usuarios.nombres, usuarios.apellidoPaterno, usuarios.apellidoMaterno, boletos.codigoBarras,
-        asistenciaUsuarios.asistencia, eventos.nombre, eventos.fecha, dependencias.nombre FROM usuarios
+        SELECT boletos.codigoBarras, asistenciaUsuarios.asistencia, eventos.nombre, eventos.fecha,
+            dependencias.nombre FROM usuarios
             INNER JOIN asistenciaUsuarios ON usuarios.idUsuarios = asistenciaUsuarios.idUsuarios
             INNER JOIN boletos ON asistenciaUsuarios.idBoletos = boletos.idBoletos
             INNER JOIN eventos ON boletos.idEventos = eventos.idEventos
@@ -46,4 +46,9 @@ CREATE PROCEDURE updatePassword(
         WHERE matricula = @matricula AND contraseña = @contraseñaActual
 end
 
-EXEC updatePassword 100, juan, juana, aaa
+CREATE PROCEDURE requestName(
+    @matricula int
+) AS BEGIN
+    SELECT usuarios.nombres, usuarios.apellidoPaterno, usuarios.apellidoMaterno FROM usuarios
+        WHERE @matricula = matricula
+end

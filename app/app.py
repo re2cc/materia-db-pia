@@ -90,7 +90,7 @@ class ApiMSQLS:
     def initialize_tickets(self):
         ticket_options = ""
         for ticket in self.userTickets:
-            ticket_options += ("<option value=\"" + str(ticket[3]) + "\">" + ticket[5] + " - " + str(ticket[3])
+            ticket_options += ("<option value=\"" + str(ticket[0]) + "\">" + ticket[2] + " - " + str(ticket[0])
                                + "</option>\n")
         response = {'name': self.name, 'ticket_options': ticket_options}
         print(response)
@@ -98,20 +98,20 @@ class ApiMSQLS:
 
     def get_ticket_details(self, selected):
         for ticket in self.userTickets:
-            if ticket[3] == int(selected):
-                response = {'message': "Nombre del evento: " + ticket[5] + "\nCodigo: " + str(ticket[3])
-                                       + "\nFecha y hora: " + ticket[6].strftime("%d/%m/%Y, %H:%M:%S")
-                                       + "\nDependencia: " + ticket[7]}
+            if ticket[0] == int(selected):
+                response = {'message': "Nombre del evento: " + ticket[2] + "\nCodigo: " + str(ticket[0])
+                                       + "\nFecha y hora: " + ticket[3].strftime("%d/%m/%Y, %H:%M:%S")
+                                       + "\nDependencia: " + ticket[4]}
                 print(response)
                 return response
 
     def delete_ticket(self, selected):
         for ticket in self.userTickets:
-            if ticket[3] == int(selected):
-                self.cursor.execute("EXEC requestEliminarBoletoUsuario " + str(ticket[3]))
+            if ticket[0] == int(selected):
+                self.cursor.execute("EXEC requestEliminarBoletoUsuario " + str(ticket[0]))
                 self.cursor.execute("EXEC requestLogin " + self.matricula + ", '" + self.hashed.decode() + "'")
                 self.userTickets = self.cursor.fetchall()
-                #self.conn.commit()
+                self.conn.commit()
                 response = {'message': "Borrado satisfactoriamente!"}
                 print(response)
                 window.load_html(ticketsHtml)
