@@ -52,3 +52,19 @@ CREATE PROCEDURE requestName(
     SELECT usuarios.nombres, usuarios.apellidoPaterno, usuarios.apellidoMaterno FROM usuarios
         WHERE @matricula = matricula
 end
+
+CREATE PROCEDURE requestCrearBoletoUsuario (
+    @matricula int,
+    @idEvento int
+) AS BEGIN
+    declare @idBoleto int
+    INSERT INTO boletos (codigoBarras, idEventos) VALUES (FLOOR(RAND() * (2147482639)) + 1000, @idEvento)
+    select @idBoleto = scope_identity()
+    INSERT INTO asistenciaUsuarios (idBoletos, asistencia, idUsuarios) SELECT @idBoleto, 1, idUsuarios FROM usuarios WHERE matricula = @matricula
+end
+
+CREATE PROCEDURE requestEventos AS BEGIN
+    SELECT * FROM eventos
+end
+
+EXEC requestCrearBoletoUsuario 100, 1

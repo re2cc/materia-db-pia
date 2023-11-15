@@ -32,7 +32,14 @@
 <p id='pywebview-status'><i>pywebview</i> is not ready</p>
 <p id='nameText'></p>
 
-<h2>Ver detalles:</h2>
+<h2>Obtener boleto:</h2>
+<label for="eventosDrop">Selecciona un evento:</label>
+<select name="eventosDrop" id="eventosDrop">
+</select>
+<div id="buttonContainer">
+    <button onClick="generate_ticket()">Generar</button><br/>
+</div>
+<h2>Ver detalles de tus boletos:</h2>
 <label for="boletosDrop">Selecciona un boleto:</label>
 <select name="boletosDrop" id="boletosDrop">
 </select>
@@ -54,8 +61,11 @@
         var container = document.getElementById('nameText')
         container.innerText = 'Bienvenido ' + response.name + '!'
 
-        var option = document.getElementById('boletosDrop')
-        option.innerHTML = response.ticket_options
+        var optionTicket = document.getElementById('boletosDrop')
+        optionTicket.innerHTML = response.ticket_options
+
+        var optionEvent = document.getElementById('eventosDrop')
+        optionEvent.innerHTML = response.event_options
     }
 
     function showResponse(response) {
@@ -79,6 +89,12 @@
         var options = document.getElementById("boletosDrop");
         var selected = options.value;
         pywebview.api.delete_ticket(selected).then(showResponse)
+    }
+
+    function generate_ticket() {
+        var options = document.getElementById("eventosDrop");
+        var selected = options.value;
+        pywebview.api.generate_ticket(selected).then(showResponse)
     }
 
 </script>

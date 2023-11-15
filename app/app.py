@@ -27,6 +27,7 @@ class ApiMSQLS:
         self.hashed = b""
         self.userTickets = []
         self.name = ""
+        self.events = []
 
     def login(self, matricula, password):
         self.matricula = matricula
@@ -46,13 +47,14 @@ class ApiMSQLS:
         self.cursor.execute("EXEC requestName " + self.matricula)
         names = self.cursor.fetchone()
         self.name = names[0] + " " + names[1] + " " + names[2]
+        self.cursor.execute("EXEC requestEventos")
+        self.events = self.cursor.fetchall()
         window.load_html(dashboardHtml)
         response = {'message': 'Accediendo...'}
         return response
 
     def initialize_dashboard(self):
         response = {'name': self.name}
-        print(response)
         return response
 
     def logout(self):
@@ -71,8 +73,6 @@ class ApiMSQLS:
     def change_password(self, password):
         new_salt = bcrypt.gensalt(12)
         new_hashed = bcrypt.hashpw(password.encode('utf-8'), new_salt)
-        print("EXEC updatePassword " + self.matricula + ", '" + self.hashed.decode() + "', '" + new_hashed.decode()
-              + "', '" + new_salt.decode() + "'")
         try:
             self.cursor.execute("EXEC updatePassword " + self.matricula + ", '" + self.hashed.decode() + "', '"
                                 + new_hashed.decode() + "', '" + new_salt.decode() + "'")
@@ -89,11 +89,14 @@ class ApiMSQLS:
 
     def initialize_tickets(self):
         ticket_options = ""
+        event_options = ""
         for ticket in self.userTickets:
             ticket_options += ("<option value=\"" + str(ticket[0]) + "\">" + ticket[2] + " - " + str(ticket[0])
                                + "</option>\n")
-        response = {'name': self.name, 'ticket_options': ticket_options}
-        print(response)
+        for event in self.events:
+            event_options += ("<option value=\"" + str(event[0]) + "\">" + event[1] + " - "
+                              + event[2].strftime("%d/%m/%Y, %H:%M:%S") + "</option>\n")
+        response = {'name': self.name, 'ticket_options': ticket_options, 'event_options': event_options}
         return response
 
     def get_ticket_details(self, selected):
@@ -102,7 +105,6 @@ class ApiMSQLS:
                 response = {'message': "Nombre del evento: " + ticket[2] + "\nCodigo: " + str(ticket[0])
                                        + "\nFecha y hora: " + ticket[3].strftime("%d/%m/%Y, %H:%M:%S")
                                        + "\nDependencia: " + ticket[4]}
-                print(response)
                 return response
 
     def delete_ticket(self, selected):
@@ -113,7 +115,17 @@ class ApiMSQLS:
                 self.userTickets = self.cursor.fetchall()
                 self.conn.commit()
                 response = {'message': "Borrado satisfactoriamente!"}
-                print(response)
+                window.load_html(ticketsHtml)
+                return response
+
+    def generate_ticket(self, selected):
+        for event in self.events:
+            if event[0] == int(selected):
+                self.cursor.execute("EXEC requestCrearBoletoUsuario " + self.matricula + ", " + str(event[0]))
+                self.cursor.execute("EXEC requestLogin " + self.matricula + ", '" + self.hashed.decode() + "'")
+                self.userTickets = self.cursor.fetchall()
+                self.conn.commit()
+                response = {'message': "Borrado satisfactoriamente!"}
                 window.load_html(ticketsHtml)
                 return response
 
