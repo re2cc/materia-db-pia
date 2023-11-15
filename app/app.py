@@ -43,7 +43,9 @@ class ApiMSQLS:
         except Exception:
             response = {'message': 'Matricula o password incorrectos'}
             return response
-        self.name = self.userTickets[0][0] + " " + self.userTickets[0][1]
+        self.cursor.execute("EXEC requestName " + self.matricula)
+        names = self.cursor.fetchone()
+        self.name = names[0] + " " + names[1] + " " + names[2]
         window.load_html(dashboardHtml)
         response = {'message': 'Accediendo...'}
         return response
@@ -93,6 +95,27 @@ class ApiMSQLS:
         response = {'name': self.name, 'ticket_options': ticket_options}
         print(response)
         return response
+
+    def get_ticket_details(self, selected):
+        for ticket in self.userTickets:
+            if ticket[3] == int(selected):
+                response = {'message': "Nombre del evento: " + ticket[5] + "\nCodigo: " + str(ticket[3])
+                                       + "\nFecha y hora: " + ticket[6].strftime("%d/%m/%Y, %H:%M:%S")
+                                       + "\nDependencia: " + ticket[7]}
+                print(response)
+                return response
+
+    def delete_ticket(self, selected):
+        for ticket in self.userTickets:
+            if ticket[3] == int(selected):
+                self.cursor.execute("EXEC requestEliminarBoletoUsuario " + str(ticket[3]))
+                self.cursor.execute("EXEC requestLogin " + self.matricula + ", '" + self.hashed.decode() + "'")
+                self.userTickets = self.cursor.fetchall()
+                #self.conn.commit()
+                response = {'message': "Borrado satisfactoriamente!"}
+                print(response)
+                window.load_html(ticketsHtml)
+                return response
 
 
 if __name__ == '__main__':
